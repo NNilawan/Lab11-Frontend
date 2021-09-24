@@ -53,6 +53,7 @@ export default {
   },
   methods: {
     saveEvent() {
+      console.log(this.files)
       Promise.all(
         this.files.map((file) => {
           return EventService.uploadFile(file)
