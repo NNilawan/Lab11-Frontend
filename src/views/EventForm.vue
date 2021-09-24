@@ -63,7 +63,7 @@ export default {
 
       EventService.saveEvent(this.event)
         .then((response) => {
-          console.log(response)
+          console.log(response.map((r) => r.data))
           this.$router.push({
             name: 'EventLayout',
             params: { id: response.data.id }
