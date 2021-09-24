@@ -45,7 +45,8 @@ export default {
         title: '',
         description: '',
         location: '',
-        organizer: { id: '', name: '' }
+        organizer: { id: '', name: '' },
+        imageUrls: []
       },
       files: []
     }
