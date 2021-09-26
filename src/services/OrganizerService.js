@@ -22,6 +22,11 @@ export default {
     saveOrganizer(organizer) {
         return apiClient.post('/organizers', organizer)
     },
+    getOrganizerByKeyword(keyword, perPage, page) {
+        return apiClient.get(
+            'organizerList?_limit=' + perPage + '&_page=' + page + '&title=' + keyword
+        )
+    },
     uploadFile(file) {
         let formData = new FormData()
         formData.append('file', file)

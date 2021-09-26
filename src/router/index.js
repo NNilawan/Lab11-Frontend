@@ -14,10 +14,20 @@ import GStore from '@/store'
 import OrganizerService from '@/services/OrganizerService.js'
 import AddOrganizer from '@/views/OrganizerForm.vue'
 
+import OrganizerList from '../views/OrganizerList.vue'
+import OrganizerDetails from '@/views/organizer/Details.vue'
+import OrganizerLayout from '@/views/organizer/Layout.vue'
+
 const routes = [{
         path: '/',
         name: 'EventList',
         component: EventList,
+        props: (route) => ({ page: parseInt(route.query.page) || 1 })
+    },
+    {
+        path: '/organizerList',
+        name: 'OrganizerList',
+        component: OrganizerList,
         props: (route) => ({ page: parseInt(route.query.page) || 1 })
     },
     {
@@ -86,6 +96,35 @@ const routes = [{
                 component: EventEdit
             }
         ]
+    },
+    {
+        path: '/organizer/:id',
+        name: 'OrganizerLayout',
+        props: true,
+        component: OrganizerLayout,
+        beforeEnter: (to) => {
+            return OrganizerService.getOrganizer(to.params.id) // Return and params.id
+                .then((response) => {
+                    // Still need to set the data here
+                    GStore.organizer = response.data // <--- Store the event
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status == 404) {
+                        return {
+                            // <--- Return
+                            name: '404Resource',
+                            params: { resource: 'organizer' }
+                        }
+                    } else {
+                        return { name: 'NetworkError' } // <--- Return
+                    }
+                })
+        },
+        children: [{
+            path: '',
+            name: 'OrganizerDetails',
+            component: OrganizerDetails
+        }]
     },
     {
         path: '/404/:resource',
